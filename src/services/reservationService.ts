@@ -133,7 +133,7 @@ export const sendEmailNotification = (to: string, subject: string, message: stri
   // If EmailJS is configured, send an actual email
   if (serviceId && templateId && userId && reservation) {
     // Initialize EmailJS with the user ID
-    if (!emailjs._initialized) {
+    if (!(emailjs as any)._initialized) {
       emailjs.init(userId);
     }
     

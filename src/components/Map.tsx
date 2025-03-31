@@ -1,8 +1,16 @@
 
 import React, { useEffect, useRef } from "react";
 
+// Add type declaration for Google Maps
+declare global {
+  interface Window {
+    google: any;
+  }
+}
+
 const Map: React.FC = () => {
   const mapRef = useRef<HTMLDivElement>(null);
+  const scriptRef = useRef<HTMLScriptElement | null>(null);
 
   useEffect(() => {
     // Load Google Maps API script
@@ -10,7 +18,10 @@ const Map: React.FC = () => {
     googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=&libraries=places`;
     googleMapScript.async = true;
     googleMapScript.defer = true;
-    window.document.body.appendChild(googleMapScript);
+    document.body.appendChild(googleMapScript);
+    
+    // Store reference to the script element for cleanup
+    scriptRef.current = googleMapScript;
 
     googleMapScript.addEventListener("load", () => {
       if (mapRef.current && window.google) {
@@ -230,12 +241,12 @@ const Map: React.FC = () => {
       }
     });
 
-    // Clean up
+    // Clean up - fix the removeChild error
     return () => {
-      const scriptTags = document.querySelectorAll('script[src*="maps.googleapis.com"]');
-      scriptTags.forEach((tag) => {
-        document.body.removeChild(tag);
-      });
+      // Only remove the script if it's still in the document
+      if (scriptRef.current && document.body.contains(scriptRef.current)) {
+        document.body.removeChild(scriptRef.current);
+      }
     };
   }, []);
 
