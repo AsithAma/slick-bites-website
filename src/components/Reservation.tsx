@@ -1,7 +1,9 @@
 
 import React, { useState, useEffect, useRef } from "react";
-import { Calendar, Clock, User, Phone, CalendarCheck } from "lucide-react";
+import { Calendar, Clock, User, Phone, CalendarCheck, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { saveReservation } from "@/services/reservationService";
+import { Link } from "react-router-dom";
 
 const Reservation: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -46,12 +48,15 @@ const Reservation: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call with setTimeout
-    setTimeout(() => {
+    try {
+      // Save reservation to our service
+      saveReservation(formData);
+      
       toast({
         title: "Reservation Request Submitted",
         description: "We'll contact you shortly to confirm your reservation.",
       });
+      
       setFormData({
         name: "",
         email: "",
@@ -61,8 +66,15 @@ const Reservation: React.FC = () => {
         guests: 2,
         specialRequests: "",
       });
+    } catch (error) {
+      toast({
+        title: "Error Submitting Reservation",
+        description: "Please try again or call us directly.",
+        variant: "destructive",
+      });
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -115,6 +127,18 @@ const Reservation: React.FC = () => {
                       required
                     />
                   </div>
+                </div>
+                
+                <div className="relative mb-4">
+                  <Mail className="absolute top-3 left-3 text-muted-foreground" size={16} />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    className="w-full pl-10 pr-4 py-3 rounded-md border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -200,6 +224,13 @@ const Reservation: React.FC = () => {
                     "Book Table"
                   )}
                 </button>
+                
+                {/* For Admin - only visible to restaurant staff */}
+                <div className="mt-6 text-center text-sm text-muted-foreground">
+                  <Link to="/admin/reservations" className="text-accent hover:underline">
+                    Restaurant Staff Access
+                  </Link>
+                </div>
               </form>
             </div>
           </div>
