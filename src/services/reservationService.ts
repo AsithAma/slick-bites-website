@@ -1,5 +1,6 @@
 
 // This service handles reservation data storage and retrieval
+import emailjs from 'emailjs-com';
 
 type Reservation = {
   id: string;
@@ -35,7 +36,8 @@ export const saveReservation = (reservation: Omit<Reservation, 'id' | 'createdAt
     sendEmailNotification(
       newReservation.email,
       'Reservation Received',
-      `Dear ${newReservation.name},\n\nThank you for your reservation request at The Eating Establishment for ${newReservation.date} at ${formatTime(newReservation.time)} for ${newReservation.guests} guests.\n\nYour reservation is currently pending confirmation. We will contact you shortly to confirm your reservation.\n\nBest regards,\nThe Eating Establishment Team`
+      `Dear ${newReservation.name},\n\nThank you for your reservation request at The Eating Establishment for ${newReservation.date} at ${formatTime(newReservation.time)} for ${newReservation.guests} guests.\n\nYour reservation is currently pending confirmation. We will contact you shortly to confirm your reservation.\n\nBest regards,\nThe Eating Establishment Team`,
+      newReservation
     );
   }
   
@@ -78,7 +80,7 @@ export const updateReservationStatus = (id: string, status: Reservation['status'
     }
     
     if (subject && message) {
-      sendEmailNotification(reservation.email, subject, message);
+      sendEmailNotification(reservation.email, subject, message, reservation);
     }
   }
   
@@ -97,7 +99,8 @@ export const deleteReservation = (id: string): boolean => {
     sendEmailNotification(
       reservation.email,
       'Reservation Cancelled',
-      `Dear ${reservation.name},\n\nYour reservation at The Eating Establishment for ${reservation.date} at ${formatTime(reservation.time)} has been cancelled.\n\nIf you did not request this cancellation, please contact us at 435.649.8284.\n\nBest regards,\nThe Eating Establishment Team`
+      `Dear ${reservation.name},\n\nYour reservation at The Eating Establishment for ${reservation.date} at ${formatTime(reservation.time)} has been cancelled.\n\nIf you did not request this cancellation, please contact us at 435.649.8284.\n\nBest regards,\nThe Eating Establishment Team`,
+      reservation
     );
   }
   
@@ -120,14 +123,49 @@ const formatTime = (timeString: string): string => {
   }
 };
 
-// Function to simulate sending an email (in a real app, this would use an email service API)
-export const sendEmailNotification = (to: string, subject: string, message: string): void => {
-  // In a real application, you would use an email service like SendGrid, Mailgun, etc.
-  console.log(`Sending email to: ${to}`);
-  console.log(`Subject: ${subject}`);
-  console.log(`Message: ${message}`);
+// Function to send an actual email using EmailJS
+export const sendEmailNotification = (to: string, subject: string, message: string, reservation?: Reservation): void => {
+  // Get EmailJS configuration from localStorage
+  const serviceId = localStorage.getItem("emailjs_service_id");
+  const templateId = localStorage.getItem("emailjs_template_id");
+  const userId = localStorage.getItem("emailjs_user_id");
   
-  // For demo purposes, we'll store the emails in localStorage
+  // If EmailJS is configured, send an actual email
+  if (serviceId && templateId && userId && reservation) {
+    // Initialize EmailJS with the user ID
+    if (!emailjs._initialized) {
+      emailjs.init(userId);
+    }
+    
+    // Prepare the template parameters
+    const templateParams = {
+      to_email: to,
+      to_name: reservation.name,
+      subject: subject,
+      message: message,
+      reservation_date: reservation.date,
+      reservation_time: formatTime(reservation.time),
+      guests: reservation.guests,
+      status: reservation.status,
+      phone: reservation.phone,
+      special_requests: reservation.specialRequests || "None"
+    };
+
+    // Send email using EmailJS
+    emailjs.send(serviceId, templateId, templateParams)
+      .then((response) => {
+        console.log('EMAIL SENT SUCCESSFULLY!', response.status, response.text);
+      }, (error) => {
+        console.error('EMAIL SENDING FAILED...', error);
+      });
+  } else {
+    // If EmailJS is not configured, log to console
+    console.log(`Would send email to: ${to}`);
+    console.log(`Subject: ${subject}`);
+    console.log(`Message: ${message}`);
+  }
+  
+  // Always store the email in localStorage for demo purposes
   const emailsKey = 'sent-emails';
   const sentEmails = JSON.parse(localStorage.getItem(emailsKey) || '[]');
   sentEmails.push({

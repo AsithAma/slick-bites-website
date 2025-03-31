@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from "react";
 import { 
   getReservations, 
   updateReservationStatus, 
   deleteReservation 
 } from "@/services/reservationService";
-import { Check, X, Trash2, CalendarRange, Clock, User, Phone, Mail } from "lucide-react";
+import { Check, X, Trash2, CalendarRange, Clock, User, Phone, Mail, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
 import {
@@ -27,6 +26,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import EmailConfig from "@/components/EmailConfig";
+import emailjs from 'emailjs-com';
 
 type Reservation = {
   id: string;
@@ -60,6 +61,12 @@ const AdminPage: React.FC = () => {
   useEffect(() => {
     loadReservations();
     loadSentEmails();
+    
+    // Initialize EmailJS if credentials exist
+    const userId = localStorage.getItem("emailjs_user_id");
+    if (userId) {
+      emailjs.init(userId);
+    }
   }, []);
   
   useEffect(() => {
@@ -159,6 +166,7 @@ const AdminPage: React.FC = () => {
         <TabsList className="mb-6">
           <TabsTrigger value="reservations">Reservations</TabsTrigger>
           <TabsTrigger value="emails">Email Notifications</TabsTrigger>
+          <TabsTrigger value="settings">Email Settings</TabsTrigger>
         </TabsList>
         
         <TabsContent value="reservations">
@@ -359,6 +367,10 @@ const AdminPage: React.FC = () => {
               </div>
             </CardFooter>
           </Card>
+        </TabsContent>
+        
+        <TabsContent value="settings">
+          <EmailConfig />
         </TabsContent>
       </Tabs>
     </div>
