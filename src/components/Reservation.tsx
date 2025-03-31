@@ -54,7 +54,7 @@ const Reservation: React.FC = () => {
       
       toast({
         title: "Reservation Request Submitted",
-        description: "We'll contact you shortly to confirm your reservation.",
+        description: "We'll contact you shortly to confirm your reservation. Please check your email for updates.",
       });
       
       setFormData({
@@ -134,10 +134,11 @@ const Reservation: React.FC = () => {
                   <input
                     type="email"
                     name="email"
-                    placeholder="Email Address"
+                    placeholder="Email Address (for reservation updates)"
                     className="w-full pl-10 pr-4 py-3 rounded-md border border-border focus:border-accent focus:ring-1 focus:ring-accent outline-none transition"
                     value={formData.email}
                     onChange={handleChange}
+                    required
                   />
                 </div>
 
