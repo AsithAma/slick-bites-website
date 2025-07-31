@@ -1,69 +1,120 @@
-# Welcome to your Lovable project
+# Slick Bites Restaurant Website
 
-## Project info
+A modern, responsive restaurant website built with React, TypeScript, and Tailwind CSS.
 
-**URL**: https://lovable.dev/projects/c89f3bb4-b74c-4bf5-a932-06824da9b3e3
+## Features
 
-## How can I edit this code?
+- **Modern UI/UX**: Clean and professional design with smooth animations
+- **Responsive Design**: Optimized for all devices and screen sizes
+- **Interactive Menu**: Beautiful menu presentation with filtering options
+- **Reservation System**: Easy-to-use booking functionality
+- **Gallery**: Showcase your restaurant's atmosphere and dishes
+- **Contact Information**: Integrated maps and contact details
+- **Admin Panel**: Manage reservations and content
 
-There are several ways of editing your application.
+## Technologies Used
 
-**Use Lovable**
+- **React 18** - Modern React with hooks
+- **TypeScript** - Type-safe development
+- **Vite** - Fast build tool and development server
+- **Tailwind CSS** - Utility-first CSS framework
+- **shadcn/ui** - Beautiful and accessible UI components
+- **React Router** - Client-side routing
+- **React Hook Form** - Form handling and validation
+- **Lucide React** - Beautiful icons
+- **EmailJS** - Email functionality
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/c89f3bb4-b74c-4bf5-a932-06824da9b3e3) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js (version 18 or higher)
+- npm or yarn
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. Clone the repository:
+```bash
+git clone <your-repository-url>
+cd slick-bites-website
+```
 
-Follow these steps:
+2. Install dependencies:
+```bash
+npm install
+```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+3. Start the development server:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+4. Open your browser and navigate to `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Available Scripts
 
-**Use GitHub Codespaces**
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run build:dev` - Build for development
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project Structure
 
-## What technologies are used for this project?
+```
+src/
+├── components/          # Reusable UI components
+│   ├── ui/             # shadcn/ui components
+│   ├── Hero.tsx        # Hero section
+│   ├── MenuSection.tsx # Menu display
+│   ├── Reservation.tsx # Booking form
+│   └── ...
+├── pages/              # Page components
+├── services/           # API and service functions
+├── hooks/              # Custom React hooks
+└── lib/                # Utility functions
+```
 
-This project is built with .
+## Customization
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Styling
+The project uses Tailwind CSS for styling. You can customize colors, fonts, and other design tokens in `tailwind.config.ts`.
 
-## How can I deploy this project?
+### Content
+Update the content in the component files to match your restaurant's information, menu items, and branding.
 
-Simply open [Lovable](https://lovable.dev/projects/c89f3bb4-b74c-4bf5-a932-06824da9b3e3) and click on Share -> Publish.
+### Images
+Replace placeholder images in the `public/` directory with your restaurant's photos.
 
-## I want to use a custom domain - is that possible?
+## Deployment
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+### Netlify
+1. Connect your GitHub repository to Netlify
+2. Set build command: `npm run build`
+3. Set publish directory: `dist`
+4. Deploy!
+
+### Vercel
+1. Install Vercel CLI: `npm i -g vercel`
+2. Run `vercel` in your project directory
+3. Follow the prompts
+
+### Other Platforms
+The project builds to static files in the `dist/` directory, making it compatible with any static hosting service.
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature-name`
+3. Make your changes
+4. Commit your changes: `git commit -m 'Add feature'`
+5. Push to the branch: `git push origin feature-name`
+6. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For support or questions, please open an issue in the repository.
